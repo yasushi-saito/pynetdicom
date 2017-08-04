@@ -81,18 +81,19 @@ DicomDictionary.update({
 DEBUG = False
 
 
-def fragment(maxpdulength, str):
-    s = str
+def fragment(maxpdulength, s):
+    """Splits the given string into a list of substrings, so that each substring is
+    at most maxpdulength long"""
+
     fragments = []
     maxsize = maxpdulength - 6
-    while 1:
-        fragments.append(s[:maxsize])
-        s = s[maxsize:]
-        if len(s) <= maxsize:
-            if len(s) > 0:
-                fragments.append(s)
-            return fragments
-
+    start = 0
+    while start < len(s):
+        length = min(maxsize, len(s) - start)
+        fragments.append(s[start:start + length])
+        start += length
+    assert s == ''.join(fragments)
+    return fragments
 
 class DIMSEMessage:
 
